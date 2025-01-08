@@ -1,13 +1,20 @@
-import React from 'react'
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 
 const Header = () => {
   return (
-    <header className="bg-white">
+    <header className="bg-white fixed top-0 left-0 right-0 z-50 shadow-md">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="md:flex md:items-center md:gap-12">
-            <Image src='/sports wear.png'  alt='logo' width={85} height={80} color='#ffff' className='mt-2'/>
+            <Image
+              src="/sports wear.png"
+              alt="logo"
+              width={85}
+              height={80}
+              color="#ffff"
+              className="mt-2"
+            />
           </div>
 
           <div className="hidden md:block ">
@@ -118,6 +125,6 @@ const Header = () => {
       </div>
     </header>
   );
-}
+};
 
-export default Header
+export default Header;
