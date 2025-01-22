@@ -1,11 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import { List } from "lucide-react";
+import Link from "next/link";
 
 function ProductItem({ product }) {
   const randomDiscount = Math.floor(Math.random() * (30 - 5 + 1)) + 5;
   return (
-    <div className="border rounded-lg p-4 shadow hover:shadow-lg transition-shadow bg-white cursor-pointer ">
+    <Link
+      href={`/product-details/${product?.documentId}`}
+      className="border rounded-lg p-4 shadow hover:shadow-lg transition-shadow bg-white cursor-pointer "
+    >
       {/* Image container with fixed aspect ratio and max width/height */}
       <div className="relative aspect-[3/4] w-full max-w-[300px] mx-auto mb-4 ">
         <span className="absolute -right-px -top-px rounded-bl-3xl rounded-tr-3xl bg-rose-600 px-6 py-4 font-medium uppercase tracking-widest text-white z-10">
@@ -41,7 +45,7 @@ function ProductItem({ product }) {
           ${product.price}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }
 

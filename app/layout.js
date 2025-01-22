@@ -2,7 +2,13 @@ import { Providers } from "./_redux/Providers";
 import "./globals.css";
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
-
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
 export const metadata = {
   title: "ACTIVE SW",
   description: "POWER YOUR WORKOUT",
@@ -20,16 +26,23 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>
-          <Header />
-          {children}
-          <Footer />
-        </Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          {/* <SignedOut> */}
+            {/* <SignedIn routing='hash' /> */}
+          {/* </SignedOut> */}
+          {/* <SignedIn> */}
+            <Providers>
+              <Header />
+              {children}
+              <Footer />
+            </Providers>
+          {/* </SignedIn> */}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
