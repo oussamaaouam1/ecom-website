@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { ShoppingCart } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCartItems } from "../_redux/getCartItemsSlice";
 
 const Header = () => {
-  console.log(window.location.href);
+  // console.log(window.location.href);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     setIsLoggedIn(
@@ -15,13 +17,24 @@ const Header = () => {
   }, []);
 
   const { user } = useUser();
+  const dispatch = useDispatch();
+  const { items } = useSelector((state) => state.getCartItems);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getCartItems(user.primaryEmailAddress.emailAddress)); // Fetch cart items based on user email
+      console.log(items);
+    }
+  }, [dispatch, user]);
+  console.log(items);
+  console.log(user)
 
   return (
     !isLoggedIn && (
       <header className="bg-white fixed top-0 left-0 right-0 z-50 shadow-md header">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            <div className="md:flex md:items-center md:gap-12" >
+            <div className="md:flex md:items-center md:gap-12">
               <Image
                 src="/sports wear.png"
                 alt="logo"
@@ -123,7 +136,7 @@ const Header = () => {
                   <div className="pt-6">
                     <ShoppingCart className="text-primary" />
                     <p className="bg-light rounded-full relative bottom-8 left-4 text-center text-black font-bold cursor-pointer">
-                      0
+                      {items.length}
                     </p>
                   </div>
                 </div>

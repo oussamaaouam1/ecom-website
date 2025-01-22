@@ -1,20 +1,54 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import { List } from "lucide-react";
 import { ShoppingCart } from "lucide-react";
-import {useUser} from '@clerk/nextjs'
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+// import CartApis from '../../../_utils/CartApis'
+import CartApis from "../../../_utils/CartApis";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../_redux/addToCartSlice"; // Import the action
 
 function ProductInfo({ product }) {
-  // console.log(product);
+  console.log(product?.documentId);
 
-  const {user} = useUser();
+  //  State to display a warning message
+  const [warning, setWarning] = useState("");
+
+  const { user } = useUser();
   const router = useRouter();
-  const handleAddToCart = () =>{
-    if(!user){
-      router.push('/sign-in')
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    if (!user) {
+      router.push("/sign-in");
+    } else {
+      if (selectedColor == null || selectedSize == null) {
+        console.log("select the size and the color first");
+        setWarning("Please select a size and a color before adding to cart.");
+        return;
+      }
+      setWarning("");
+      //add to cart logic
+      const data = {
+        data: {
+          username: user.fullName,
+          email: user.primaryEmailAddress.emailAddress,
+          products: product?.documentId,
+          size: selectedSize,
+          color: selectedColor,
+        },
+      };
+      dispatch(addToCart(data))
+        .unwrap() // Optional: Use unwrap to handle the promise
+        .then(() => {
+          console.log("Cart Created Successfully");
+        })
+        .catch((error) => {
+          console.error("Error adding to cart:", error);
+        });
     }
-  }
+  };
 
   // State to track the selected size and color
   const [selectedSize, setSelectedSize] = useState(null);
@@ -23,11 +57,13 @@ function ProductInfo({ product }) {
   const handleSizeClick = (size) => {
     setSelectedSize(size);
     console.log("Selected Size:", size);
+    setWarning("");
   };
 
   const handleColorClick = (color) => {
     setSelectedColor(color);
     console.log("Selected Color:", color);
+    setWarning("");
   };
 
   return (
@@ -98,10 +134,10 @@ function ProductInfo({ product }) {
               <div>No Colors available</div>
             )}
           </div>
-
+          <p className="text-red-500 mt-3 font-bold text-sm">{warning}</p>
           <button
             className="flex justify-center mt-8 gap-2 bg-black p-4 rounded-3xl hover:bg-light transition duration-400 hover:text-black hover:drop-shadow-md"
-            onClick={()=>handleAddToCart()}
+            onClick={() => handleAddToCart()}
           >
             <ShoppingCart />
             Add To Cart
