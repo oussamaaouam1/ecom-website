@@ -29,6 +29,7 @@ const productIdSlice = createSlice({
     builder
       .addCase(getProductById.pending, (state) => {
         state.loading = true;
+        state.error= null
       })
       .addCase(getProductById.fulfilled, (state, action) => {
         state.loading = false;

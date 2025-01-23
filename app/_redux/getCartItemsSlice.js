@@ -27,7 +27,8 @@ const getCartItemsSlice = createSlice({
       })
       .addCase(getCartItems.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload.products || []; // Store the products in the state
+        state.items = action.payload || []; // Store the products in the state
+        console.log("Updated Cart Items:", state.items); // Log the updated items
       })
       .addCase(getCartItems.rejected, (state, action) => {
         state.loading = false;

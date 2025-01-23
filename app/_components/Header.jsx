@@ -5,10 +5,12 @@ import { UserButton, useUser } from "@clerk/nextjs";
 import { ShoppingCart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCartItems } from "../_redux/getCartItemsSlice";
+import Cart from "./Cart";
 
 const Header = () => {
   // console.log(window.location.href);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [openCart, setOpenCart] = useState(false)
   useEffect(() => {
     setIsLoggedIn(
       window.location.href.toString().includes("sign-in") ||
@@ -23,11 +25,13 @@ const Header = () => {
   useEffect(() => {
     if (user) {
       dispatch(getCartItems(user.primaryEmailAddress.emailAddress)); // Fetch cart items based on user email
-      console.log(items);
     }
   }, [dispatch, user]);
-  console.log(items);
-  console.log(user)
+
+  // Log the items whenever they change // this lines is optional for just log the items in the consol after items changes.
+  useEffect(() => {
+    console.log("Cart Items Updated:", items); // Log the cart items
+  }, [items]);
 
   return (
     !isLoggedIn && (
@@ -134,11 +138,13 @@ const Header = () => {
                 <div className="flex gap-8 items-center ">
                   <UserButton />
                   <div className="pt-6">
-                    <ShoppingCart className="text-primary" />
+                    <ShoppingCart className="text-primary cursor-pointer" onClick={()=>setOpenCart(!openCart)}/>
                     <p className="bg-light rounded-full relative bottom-8 left-4 text-center text-black font-bold cursor-pointer">
-                      {items.length}
+                      {items?.data?.length}
                     </p>
                   </div>
+                  
+                  {openCart && <Cart cart={items} />}
                 </div>
               )}
 

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import CartApis from "../../../_utils/CartApis";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../../_redux/addToCartSlice"; // Import the action
+import { getCartItems } from "../../../_redux/getCartItemsSlice"; // Import the action
 
 function ProductInfo({ product }) {
   console.log(product?.documentId);
@@ -43,6 +44,8 @@ function ProductInfo({ product }) {
         .unwrap() // Optional: Use unwrap to handle the promise
         .then(() => {
           console.log("Cart Created Successfully");
+          // Fetch updated cart items after adding to cart
+          dispatch(getCartItems(user.primaryEmailAddress.emailAddress));
         })
         .catch((error) => {
           console.error("Error adding to cart:", error);
