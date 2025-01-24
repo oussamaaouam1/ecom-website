@@ -4,7 +4,7 @@ import React from "react";
 function Cart({ cart }) {
   // Extract the cart details
   const cartDetail = cart?.data || []; // Fallback to an empty array if undefined or null
-  console.log(cartDetail);
+  console.log('ttttttttttttttttttttttttttt',cartDetail);
   // console.log(cartDetail[0].products?.title)
 
   return (
@@ -45,6 +45,12 @@ function Cart({ cart }) {
                     <div>
                       <dt className="inline">Color:</dt>
                       <dd className="inline">{item?.color || "N/A"}</dd>
+                    </div>
+                    <div>
+                      <dt className="inline font-bold text-sm">Price:</dt>
+                      <dd className="inline font-bold text-red-700 text-sm">
+                        {item?.products[0]?.price || "N/A"}
+                      </dd>
                     </div>
                   </dl>
                 </div>
